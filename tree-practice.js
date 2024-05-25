@@ -154,51 +154,75 @@ function inOrderPredecessor(rootNode, target) {
 function deleteNodeBST(rootNode, target) {
   if (!rootNode) return null;
 
-  let queue = [rootNode];
-  let parent;
+  let current = rootNode
+  let parent = null;
 
-  while (queue.length) {
-    let node = queue.shift();
+  // FIND NODE TO DELETE AND IT'S PARENT
+  while (current && current.val !== target) {
+    parent = current;
 
-    // TWO CHILDREN
-    if (node.val === target && (node.right && node.left)) {
+    if (target < current.val) {
+      current = current.left;
+    } else {
+      current = current.right;
+    }
 
-    } 
+  }
 
+  // IF TARGET VALUE DOES NOT EXIST
+  if (!current) return;
 
-    // ONE CHILD
-    
-    
-
-
-    // NO CHILDREN
-    else if (node.val === target) {
+  // CASE 1, NODE TO DELETE HAS NO CHILDREN
+  if (!current.left && !current.right) {
+    if (!parent) {
+      rootNode = null;
+    } else if (current === parent.left) {
       parent.left = null;
+    } else {
       parent.right = null;
     }
-
-    if (node.right) {
-      queue.unshift(node.right);
-    }
-    if (node.left) {
-      queue.unshift(node.left);
-    }
-    parent = node;
   }
-  // Do a traversal to find the node. Keep track of the parent
-  // Undefined if the target cannot be found
-  // Set target based on parent
-  // Case 0: Zero children and no parent:
-  //   return null
-  // Case 1: Zero children:
-  //   Set the parent that points to it to null
-  // Case 2: Two children:
-  //  Set the value to its in-order predecessor, then delete the predecessor
-  //  Replace target node with the left most child on its right side,
-  //  or the right most child on its left side.
-  //  Then delete the child that it was replaced with.
-  // Case 3: One child:
-  //   Make the parent point to the child
+
+  // CASE 2, NODE TO DELETE HAS ONE CHILD
+  else if (!current.right) {
+    if (!parent) {
+      rootNode = current.left;
+    } else if (current === parent.left) {
+      parent.left = current.left;
+    } else {
+      parent.right = current.left;
+    }
+  }
+
+  else if (!current.left) {
+    if (!parent) {
+      rootNode = current.right;
+    } else if (current === parent.left) {
+      parent.left = current.right;
+    } else {
+      parent.right = current.right;
+    }
+  }
+
+  // CASE 3, NODE TO DELETE HAS TWO CHILDREN
+  else {
+    let successor = current.right;
+    let successorParent = current;
+
+    while (successor.left) {
+      successorParent = successor;
+      successor = successor.left;
+    }
+
+    current.val = successor.val;
+
+    if (successor === successorParent.left) {
+      successorParent.left = successor.right;
+    } else {
+      successorParent.right = successor.right;
+    }
+  }
+  return rootNode;
 }
 
 module.exports = {
