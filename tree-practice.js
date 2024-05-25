@@ -152,6 +152,39 @@ function inOrderPredecessor(rootNode, target) {
 }
 
 function deleteNodeBST(rootNode, target) {
+  if (!rootNode) return null;
+
+  let queue = [rootNode];
+  let parent;
+
+  while (queue.length) {
+    let node = queue.shift();
+
+    // TWO CHILDREN
+    if (node.val === target && (node.right && node.left)) {
+
+    } 
+
+
+    // ONE CHILD
+    
+    
+
+
+    // NO CHILDREN
+    else if (node.val === target) {
+      parent.left = null;
+      parent.right = null;
+    }
+
+    if (node.right) {
+      queue.unshift(node.right);
+    }
+    if (node.left) {
+      queue.unshift(node.left);
+    }
+    parent = node;
+  }
   // Do a traversal to find the node. Keep track of the parent
   // Undefined if the target cannot be found
   // Set target based on parent
