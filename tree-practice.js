@@ -103,7 +103,28 @@ function getParentNode(rootNode, target) {
 }
 
 function inOrderPredecessor(rootNode, target) {
-  // Your code here
+  if (target === findMinBT(rootNode)) return null;
+
+  let queue = [rootNode];                              
+  let prev = rootNode.val;                             
+
+  while (queue.length > 0) {
+    let node = queue.shift();
+    let math00 = target - prev;
+    let math01 = target - node.val;
+
+    if (math00 <= 0 || (math00 > math01) && (math01 > 0)){
+      prev = node.val;
+    }
+
+    if (node.right) {
+      queue.unshift(node.right);
+    }
+    if (node.left) {
+      queue.unshift(node.left);
+    }
+  }
+  return prev;
 }
 
 function deleteNodeBST(rootNode, target) {
